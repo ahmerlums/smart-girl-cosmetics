@@ -1,0 +1,142 @@
+<html>
+<script>
+	function deliverOrder(id,orders) {
+		console.log(orders)
+		if (confirm("Deliver This Order?")) {
+			for (var i = 0;i<orders.length;i++) {
+				var ordName = document.getElementById('name'+orders[i]).innerHTML;
+			
+				var ordquan = document.getElementById('quantity'+orders[i]).innerHTML.substr(1);
+				$.ajax({
+					async: false,
+                  type: "POST",
+                  data: {tittle : ordName,popularity: ordquan},
+                  url: "/increasePopularity"
+                });
+				
+			}
+		 $.ajax({
+                  type: "POST",
+                  data: {custid : id},
+                  url: "/deliverOrder"
+                });
+                var elem = document.getElementById('cust'+ id);
+    			elem.parentNode.removeChild(elem);
+		}
+	}
+</script>  
+
+<body>
+
+
+
+
+	<div id="main-container" class="container">
+	<!-- Main Heading Starts -->
+		<h2 class="main-heading text-center">
+			ORDERS
+		</h2>
+	<!-- Main Heading Ends -->
+	<!-- Shopping Cart Table Starts -->
+	  <% Order.select('DISTINCT customerID').each do |temp| %>
+	  	<% orderList =  Order.where(customerID: temp.customerID,status: "processed" ) %>
+	
+	  <% if orderList.length > 0 %>
+	  <% custName = User.find(temp.customerID).first_name %>
+        <div id = "cust<%= temp.customerID %>" class="col-md-3">
+						<div onclick = "changeHeight()" id="cart" class="btn-group btn-block">
+							<button  type="button" data-toggle="dropdown" class="btn btn-block btn-lg dropdown-toggle">
+								<i class="fa fa-shopping-cart"></i>
+		
+								<span class="hidden-md">Cart:</span> 
+								<% tot = 0 %>
+								<% f = Order.where(customerID: temp.customerID,status: "processed").pluck(:id) %>
+								<% orderList.each do |order| %>
+								
+   												<% product = Product.find(order.productID) %>
+   													 	<% temparr1 = eval(product.features) %>
+   											   <% prodPrce = temparr1[temparr1.find_index(order.Ptype) + 1].to_i %>
+   											  <% tot = tot + order.quantity * prodPrce %>
+   											 
+   											 <% end %>
+								<span id="cart-total"><%= custName %>'s Cart </span>
+								<i class="fa fa-caret-down"></i>
+							</button>
+							<ul class="dropdown-menu pull-right">
+								<li>
+									<table class="table hcart">
+										
+										 <%  orderList.each do |order| %>
+				      						
+   											 <% product = Product.find(order.productID) %>
+   											 <% temparr1 = eval(product.features) %>
+   											   <% prodPrce = temparr1[temparr1.find_index(order.Ptype) + 1].to_i %>
+											<% var3 =  "order"+ order.id.to_s %>
+      										<tr id  = <%= var3 %> >
+													<td class="text-center">
+												<a href="product.html">
+													<img src="<%= product.pictures_url %>" alt="image" title="image" class="img-thumbnail img-responsive" />
+												</a>
+											</td>
+											
+											
+											<td  class="text-left" >
+												<a  href ="/products/<%=product.id%>" id = "name<%=order.id%>" %><%= product.tittle %></a>
+											</td>
+											<% var =  "quantity"+ order.id.to_s %>
+											<td id = <%= var %> class="text-right">x <%= order.quantity %></td>
+											<td class="text-right">Rs <%= prodPrce %></td>
+											<td class="text-center">
+												
+											
+											</td>
+												
+											</tr>
+											
+											<% end %>
+									
+									</table>
+								</li>
+								<li>
+									<table class="table table-bordered total">
+										<tbody>
+											<tr>
+												<td class="text-right"><strong>Delivery Charges</strong></td>
+												<% if tot >= 1500 %>
+												<td id = "subtotal" class="text-left">Rs 0</td>
+												<% else %>
+													<td id = "subtotal" class="text-left">Rs 240</td>
+												<%end%>
+											</tr>
+												<tr>
+												<td class="text-right"><strong>Total</strong></td>
+												<% if tot >= 1500 %>
+												<td id = "subtotal" class="text-left">Rs <%= tot %></td>
+												<% else %>
+													<td id = "subtotal" class="text-left">Rs <%= tot + 240 %></td>
+												<%end%>
+												
+											</tr>
+										</tbody>
+									</table>
+									<p class="text-right btn-block1">
+										
+										<% if !current_user.nil?   %>
+										<%= javascript_tag do %>
+  var data = <%= current_user.id %>
+<% end %>
+<% end %>
+
+								</li>									
+							</ul>
+						</div>
+						<button onclick = "deliverOrder(<%= temp.customerID.to_i %>,<%=f.inspect.html_safe %>)" style = "margin-left: 25%;margin-top: 5px " class = "span12 btn btn-default">Deliver Order</button>
+					</div>
+			<%end%>		
+    <% end %>
+    </div>
+
+
+
+</body>
+</html>

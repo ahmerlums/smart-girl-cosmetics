@@ -1,0 +1,97 @@
+<html>
+  
+
+<body>
+
+
+
+
+	<div id="main-container" class="container">
+	<!-- Main Heading Starts -->
+		<h2 class="main-heading text-center">
+			ORDERS
+		</h2>
+	<!-- Main Heading Ends -->
+	<!-- Shopping Cart Table Starts -->
+		<div class="table-responsive shopping-cart-table">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<td class="text-center">
+							Customer Name
+						</td>
+						<td class="text-center">
+							Product Name
+						</td>
+						<td class="text-center">
+							Product Type
+						</td>	
+						<td class="text-center">
+							Quantity
+						</td>
+						<td class="text-center">
+							Date Ordered
+						</td>
+						<td class="text-center">
+							Status
+						</td>
+						
+						<td class="text-center">
+							Update
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+				      <% @orders.each do |order| %>
+    <% product = Product.find(order.productID) %>
+   
+      <tr>
+        <td class="text-center">
+						<a href = "/users/<%=order.customerID%>"> <%= User.find(order.customerID).first_name %></a>
+			</td>
+			<td class="text-center">
+					<%= link_to product.tittle, '/products/'+ product.id.to_s %>		
+			</td>
+			<td class="text-center">
+				<%= order.Ptype %>
+			  
+			 </td>
+			 
+			 	<td class="text-center">
+			 	  <%= order.quantity %>						
+				</td>
+				
+				<% f = Order.where(customerID: current_user,status: "pending").pluck(:id) %>
+				
+				 <td  class="text-center">
+				   <%=  order.dateOrdered %>
+				   </td>
+				   <td class ="text-center">
+				    <%= order.status %>
+				   </td>
+						<td class="text-center">
+						  
+						  <%= link_to edit_order_path(order), type:"button",  class: 'btn btn-default tool-tip' do %><i class="fa fa-refresh"></i> <% end %>
+						  <%= link_to order, method: :delete, data:{confirm:'Are you sure?'}, type:"button",  class: 'btn btn-default tool-tip' do %><i class="fa fa-times-circle"></i> <% end %>
+						</td>
+						
+      </tr>
+       <%end%>
+ 
+
+				</tbody>
+				<tfoot>
+					<tr>
+				</tfoot>
+			</table>	
+			<%= link_to new_order_path, type:"button",  class: 'btn btn-default' do %> New Order <% end %>
+		  <%= link_to '/shoppingcarts', type:"button",  class: 'btn btn-default' do %> View by Carts <% end %>
+		  
+		</div>
+		</div>
+	<!-- Shopping Cart Table Ends -->
+
+
+
+</body>
+</html>

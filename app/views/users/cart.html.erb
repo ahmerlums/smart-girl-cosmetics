@@ -1,0 +1,342 @@
+<html>
+  <head>
+
+	<meta charset="utf-8">
+	<!--[if IE]>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<![endif]-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<title>Fashion Stores - Bootstrap 3 Template</title>
+	
+	<!-- Bootstrap Core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Google Web Fonts -->
+	<link href="http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700" rel="stylesheet" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+	
+	<!-- CSS Files -->
+	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	<link href="css/responsive.css" rel="stylesheet">
+	
+	<!--[if lt IE 9]>
+		<script src="js/ie8-responsive-file-warning.js"></script>
+	<![endif]-->
+	
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	<!-- Fav and touch icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/fav-144.png.html">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/fav-114.png.html">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/fav-72.png.html">
+	<link rel="apple-touch-icon-precomposed" href="assets/fav-57.png.html">
+	<link rel="shortcut icon" href="assets/fav.png.html">
+	
+</head>
+
+    <script type = "text/javascript">
+    function here(arr,oid) {
+  	var selectedType = document.getElementById('typeselect'+oid).value ;
+  	for (var i = 0; i < arr.length;i++) {
+  		if (arr[i] == selectedType) {
+  			document.getElementById('theprice'+oid).innerHTML =  arr[i+1];
+  			document.getElementById('theprice1'+oid).innerHTML = 'Rs '+  arr[i+1];
+  			break;
+  		}
+  	}
+  	
+  }
+    	
+    
+    	function setTotal(t) {
+    		var tots = []
+    		for (i = 0; i < t.length ; i++) {
+    			if (document.getElementById("total"+t[i]) != null) {
+    				tots[i] = parseInt(document.getElementById("total"+t[i]).innerHTML)
+    			} else {
+    				tots[i] = 0
+    			}
+    		}
+    		var total=0;
+			for(var i in tots) { total += tots[i]; }
+    		document.getElementById("sub").innerHTML = "RS " + total;
+    		if (total >= 1500) {
+    			document.getElementById("deliveryCharges").innerHTML = "RS 0";
+				document.getElementById("subtotal").innerHTML = "RS " + total;
+				document.getElementById("subtotalHcart").innerHTML = "RS " + total;
+    		var oldCartTitle = document.getElementById("cart-total").innerHTML
+    		var oldItemTot = parseInt(oldCartTitle.split(' ')[0]);
+    		document.getElementById("cart-total").innerHTML = (oldItemTot)+" item(s) - Rs " +(total)
+    			
+    		} else {
+    			document.getElementById("deliveryCharges").innerHTML = "RS 240";
+				document.getElementById("subtotal").innerHTML = "RS " + (total + 240);
+				document.getElementById("subtotalHcart").innerHTML = "RS " + (total+240);
+    			var oldCartTitle = document.getElementById("cart-total").innerHTML
+    			var oldItemTot = parseInt(oldCartTitle.split(' ')[0]);
+    			document.getElementById("cart-total").innerHTML = (oldItemTot)+" item(s) - Rs " +(total + 240)
+    		}
+    		
+    		
+    	}
+        function updateQuantity(id, q,array,array2) {
+        	 here(array2,id);
+        	var selectedType = document.getElementById('typeselect'+id).value ;
+        	var price = document.getElementById('theprice'+id).innerHTML;
+        	
+             $.ajax({
+                  type: "POST",
+                  url: "/updateQuantity",
+                  data: {oid : id, quantity : q, Ptype:selectedType },
+  				 success: function(data) {
+      			 alert('successfully');
+    				 }
+                  
+                });
+               
+                document.getElementById("total"+id).innerHTML = price*q
+                document.getElementById("quantityHCart"+id).innerHTML = "x" + q
+                setTotal(array);
+                
+                
+        }
+        function removeItem(id,q,flag) {
+        	var p = document.getElementById('theprice'+id).innerHTML;
+        	if (flag != 1) {
+        		removeItem2(id,"x" + q,p, 1);
+        	}
+        	$.ajax({
+                  type: "POST",
+                  url: "/removeItem",
+                  data: {oid : id},
+  				 success: function(data) {
+      			 alert(data.head);
+    				 }
+                  
+                });
+                var elem = document.getElementById('order'+id);
+    			elem.parentNode.removeChild(elem);
+    			var oldTotal = 	document.getElementById("sub").innerHTML 
+    			var total = parseInt(oldTotal.substr(3)) - p*q;
+    		   document.getElementById("sub").innerHTML = "RS " + total;
+    		if (total >= 1500) {
+    			document.getElementById("deliveryCharges").innerHTML = "RS 0";
+				document.getElementById("subtotal").innerHTML = "RS " + total;
+				document.getElementById("subtotalHcart").innerHTML = "RS " + total;
+    		var oldCartTitle = document.getElementById("cart-total").innerHTML
+    		var oldItemTot = parseInt(oldCartTitle.split(' ')[0]);
+    		document.getElementById("cart-total").innerHTML = (oldItemTot)+" item(s) - Rs " +(total)
+    			
+    		} else {
+    			document.getElementById("deliveryCharges").innerHTML = "RS 240";
+				document.getElementById("subtotal").innerHTML = "RS " + (total + 240);
+				document.getElementById("subtotalHcart").innerHTML = "RS " + (total+240);
+    			var oldCartTitle = document.getElementById("cart-total").innerHTML
+    			var oldItemTot = parseInt(oldCartTitle.split(' ')[0]);
+    			document.getElementById("cart-total").innerHTML = (oldItemTot)+" item(s) - Rs " +(total + 240)
+    		}
+    		
+    	}
+    	
+        function checkoutConfirmation(uid) {
+        	total = document.getElementById("subtotal").innerHTML
+        if (confirm("Confirm Checkout for Rs " + total)) {
+            alert("Your order has been processed!")
+                $.ajax({
+                  type: "POST",
+                  data: {custid : uid},
+                  url: "/checkout"
+                });
+        } else {
+            
+        }
+       
+       
+        }
+        
+    </script>
+	
+<body>
+
+		<!-- Main Menu Starts -->
+
+<!-- Main Container Starts -->
+	<div id="main-container" class="container">
+	<!-- Breadcrumb Starts -->
+		<ol class="breadcrumb">
+			<li><a href="index.html">Home</a></li>
+			<li class="active">Shopping Cart</li>
+		</ol>
+	<!-- Breadcrumb Ends -->
+	<!-- Main Heading Starts -->
+		<h2 class="main-heading text-center">
+			Shopping Cart
+		</h2>
+	<!-- Main Heading Ends -->
+	<!-- Shopping Cart Table Starts -->
+		<div class="table-responsive shopping-cart-table">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<td class="text-center">
+							Image
+						</td>
+						<td class="text-center">
+							Product Details
+						</td>							
+						<td class="text-center">
+							Quantity
+						</td>
+						<td class="text-center">
+							Price
+						</td>
+						<td class="text-center">
+							Total
+						</td>
+						<td class="text-center">
+							Action
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					<% subtotal = 0 %>
+				      <%  Order.where(customerID: current_user,status: "pending").each do |order| %>
+				      
+    <% product = Product.find(order.productID) %>
+    <% temparr = eval(product.features) %>
+    <% prodPrce = temparr[temparr.find_index(order.Ptype) + 1].to_i %>
+    <% subtotal = subtotal + prodPrce*order.quantity %>
+     <% var3 =  "order"+ order.id.to_s %>
+      <tr id  = <%= var3 %> >
+      	
+        <td class="text-center">
+							<a href="product.html">
+								<img src="<%= product.pictures_url %>" style="width:150px;height:150px;" alt="Product Name" title="Product Name" class="img-thumbnail" />
+							</a>
+			</td>
+			
+			<td class="text-center">
+			  <%= link_to product.tittle, '/products/'+ product.id.to_s %> <br/>
+			  <select id = "typeselect<%=order.id%>" >
+			  	<% temparr.select.each_with_index { |_, i| i.even? }.each do |opt| %>
+			  	<% if opt == order.Ptype %>
+			  		<option value="<%= opt %>" selected = "selected"><%= opt %></option>
+			  	<% else %> 
+  					<option value="<%= opt %>"><%= opt %></option>
+  					<% end %>
+  				<% end %>
+					</select>
+			  
+			 </td>
+			 
+			 	<td class="text-center">
+				<div class="input-group btn-block">
+				  <% var =  "quantity"+ order.id.to_s %>
+				   <% var2 =  "total"+ order.id.to_s %>
+						<input id = <%= var %> type="text" name="quantity" value =  <%= order.quantity.to_s %>  size="1" class="form-control" />
+						</div>								
+				</td>
+				
+				<% f = Order.where(customerID: current_user,status: "pending").pluck(:id) %>
+				
+				 <td id = "theprice<%=order.id%>" class="text-center">
+				 	
+				 	<%= prodPrce %>
+				   </td>
+				   <td id = <%= var2 %> class ="text-center">
+				    <%= prodPrce*order.quantity %>
+				   </td>
+						<td class="text-center">
+							<button onclick = "updateQuantity(<%= order.id %>, <%= var %>.value, <%= f.inspect.html_safe %>, <%= temparr %> )" type="submit" title="Update" class="btn btn-default tool-tip">
+								<i class="fa fa-refresh"></i>
+							</button>
+							<button  onclick = "removeItem(<%= order.id %>, <%= var %>.value)" type="button" title="Remove" class="btn btn-default tool-tip">
+								<i class="fa fa-times-circle"></i>
+							</button>
+						</td>
+						
+      </tr>
+    <% end %>
+    <% f = Order.where(customerID: current_user,status: "pending").pluck(:id) %>
+    <script type="text/javascript">
+    	window.onload = function() {
+    		var array = <%= f.inspect.html_safe %>;
+    		setTotal(array);	
+    	};
+	</script>
+	
+
+				</tbody>
+										<tfoot>
+					
+					<tr>
+					  <td colspan="4" class="text-right">
+
+						<strong> Total :</strong>
+					  </td>
+					  <td colspan="2" class="text-left">
+					  	<% if subtotal >= 1500  %>
+						<span id = "subtotal">Rs <%= subtotal %> </span>
+						<% else %>
+						<span id = "subtotal">Rs <%= subtotal + 240 %> </span>
+						<% end %>
+						<%= javascript_tag do %>
+  var data = <%= current_user.id %>
+<% end %>
+						<button onclick = "checkoutConfirmation(data)" class="btn btn-default pull-center" > CHECKOUT </button>
+					  </td>
+					</tr>
+				</tfoot>			
+				<tfoot>
+				<tr>
+						 <td colspan="4" class="text-right">
+						 	<strong> Delivery Charges</strong>
+						 	</td>
+						 	<td colspan="2" class="text-left">
+								<% if subtotal >= 1500 %>
+								<span id = "deliveryCharges"> RS 0</span>
+								<% else %>
+								<span id = "deliveryCharges"> RS 240</span>
+								<% end %>
+								
+							</td>
+						
+					</tr>
+					</tfoot>
+					<tfoot>
+					
+					<tr>
+					  <td colspan="4" class="text-right">
+
+						<strong>Sub Total :</strong>
+					  </td>
+					  <td colspan="2" class="text-left">
+						<span  id = "sub">Rs <%= subtotal %> </span>
+					  </td>
+					</tr>
+				</tfoot>
+
+			</table>				
+		</div>
+		</div>
+	<!-- Shopping Cart Table Ends -->
+
+
+<!-- JavaScript Files -->
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/jquery-migrate-1.2.1.min.js"></script>	
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-hover-dropdown.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>

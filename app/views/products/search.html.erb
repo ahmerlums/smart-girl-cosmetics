@@ -1,0 +1,38 @@
+
+<html>
+    
+
+<body>
+    <div class="container">		
+    <% if Product.search(flash[:search]).length > 0 %>
+<% Product.search(flash[:search]).each do |product| %>
+				<div class="col-md-3 col-sm-6">
+					
+					<div class="product-col">
+						<div class="image">
+							<img src= <%= product.pictures_url %> style = "width:320px; height:250px;" alt="product" class="img-responsive" />
+						</div>
+						<div class="caption">
+							<h4> <%= link_to product.tittle, '/products/'+ product.id.to_s %> </h4>
+							<div class="price">
+								<span class="price-new">Rs <%= eval(product.features)[1] %></span>
+								<% if !current_user.nil?   %>
+								<button type="button"  class="btn btn-cart">
+									<%= link_to 'Add to Cart', {:controller => "orders", :action => "create", :quantity => 1,:Ptype => eval(product.features)[0] ,:productID => product.id, :customerID => current_user.id } , {:method=>:post,:class=>"myclass" ,:style =>'background-color:transparent;color:black;text-decoration:none' }  %>
+									
+									<i class="fa fa-shopping-cart"></i> 
+								</button>
+								<%end%>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<% end %>
+				<% else %>
+				<h1> No Results Found!</h1>
+				<%end%>
+				</div>
+				</body>
+				
+</html>

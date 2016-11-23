@@ -1,0 +1,128 @@
+<html>
+  <script>
+    function AddChoice() {
+      var theDiv = document.getElementById("choices");
+      var content = document.getElementById("addChoice");
+      var cln = content.cloneNode(true);
+      cln.style.display = 'block';
+      inps = cln.getElementsByTagName('input');
+      for (var i of inps) {
+        i.value = "";
+      }
+      var newelem = theDiv.appendChild(cln);
+    }
+  </script>
+  <body>
+
+<div id="main-container" class="container">
+  	<h1>New Product</h1>
+						<div class="panel-body">
+						<!-- Registration Form Starts -->
+								
+								<%= form_for @product do |f| %>
+  <% if @product.errors.any? %>
+    <div class="error_messages">
+      <h2>Form is invalid</h2>
+      <ul>
+        <% for message in @product.errors.full_messages %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div id = "choices">
+ <div class="form-group" style = "padding-bottom: 30px " >
+    
+    <label  class="col-sm-3 control-label">Product Name :</label>
+    <div class="col-sm-9">
+    <%= f.text_field :tittle,:class=>"form-control", placeholder: "Product Name" %>
+    </div>
+  </div>
+  
+   <div class="form-group " style = "padding-bottom: 30px " >
+    
+    <label class="col-sm-3 control-label">Product Information :</label>
+    <div class="col-sm-9">
+    <%= f.text_area :Information,:class=>"form-control", placeholder: "Product Info" %>
+    </div>
+  </div>
+  
+  <div class="form-group " style = "padding-bottom: 30px " >
+    
+    <label class="col-sm-3 control-label"> Image :</label>
+    <div class="col-sm-9">
+     <%= f.file_field :pictures %>
+    </div>
+  </div>
+  
+    <div class="form-group " style = "padding-bottom: 30px " >
+    
+    <label class="col-sm-3 control-label"> Delivery Time :</label>
+    <div class="col-sm-9">
+    <%= f.text_field :delivery_time,:class=>"form-control", placeholder: "Delivery Time" %>
+    </div>
+  </div>
+	 <div class="form-group " style = "padding-bottom: 30px " >							
+   <label class="col-sm-3 control-label"> Category :</label>
+    <div class="col-sm-9">
+    <%= f.text_field :category,:class=>"form-control", placeholder: "Category" %>
+    </div>
+  </div>
+   <div class="form-group " style = "padding-bottom: 30px " >
+   <label class="col-sm-3 control-label"> Sub-Category :</label>
+    <div class="col-sm-9">
+    <%= f.text_field :subcategory,:class=>"form-control", placeholder: "Sub-Category" %>
+    </div>
+  </div>
+    <div class="form-group " style = "padding-bottom: 30px " >
+   <label class="col-sm-3 control-label"> Popularity :</label>
+    <div class="col-sm-9">
+    <%= f.text_field :popularity,:class=>"form-control", placeholder: "Popularity" %>
+    </div>
+  </div>
+    <% if @product.features == nil %>
+  <div  id = "addChoice" class="field">
+    <%= f.label "Type:" %>
+    <%= f.text_field :features,  multiple: true %>
+    <%= f.label "Price:" %>
+    <%= f.text_field :features,  multiple: true %>
+  </div>
+  
+  <% else %>
+  <% featurearray = eval(@product.features) %>
+  
+  <% i = 0 %>
+  <% while i < featurearray.length do %>
+  <div  id = "addChoice">
+  <%= f.label "Type:" %>
+    <%= f.text_field :features,  multiple: true, :value => featurearray[i] %>
+    <%= f.label "Price:" %>
+    <%= f.text_field :features,  multiple: true, :value => featurearray[i+1] %>
+    </div>
+    <br/>
+  <% i = i + 2 %>  
+  <%end%>
+
+  <%end%>  
+  	</div>	
+<button type = "button" onclick = "AddChoice()" id="addNewChoice">Add New Choice</button>
+						
+  <div class="form-group">
+									<div class="col-sm-offset-3 col-sm-9">
+									  <%= f.submit 'Add Product', :class => 'btn btn-brown' %>
+									</div>
+								</div>
+								
+<% end %>
+					
+								
+					
+
+							<!-- Password Area Ends -->
+						<!-- Registration Form Starts -->
+						</div>	
+						</div>
+</body>
+
+
+</html>

@@ -1,0 +1,40 @@
+  <script>
+    function AddChoice() {
+      var theDiv = document.getElementById("choices");
+      var content = document.getElementById("addChoice");
+      var cln = content.cloneNode(true);
+      cln.style.display = 'block';
+      var newelem = theDiv.appendChild(cln);
+    }
+  </script>
+  
+<%= form_for(@category) do |f| %>
+  <% if @category.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h2>
+
+      <ul>
+      <% @category.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div id = "choices">
+  <div class="field">
+    <%= f.label :name %> <br>
+    <%= f.text_field :name %> 
+  </div>
+  <div class="field">
+    <%= f.label :subcategories %><br>
+     <div class = "field" id = "addChoice">
+   <%= f.text_field :subcategories, multiple: true, as: :array %>
+  </div>
+
+  </div>
+  </div>
+   <button type = "button" onclick = "AddChoice()" id="addNewChoice">Add New Choice</button>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

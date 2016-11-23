@@ -1,0 +1,81 @@
+<html>
+  
+
+<body>
+
+
+
+
+	<div id="main-container" class="container">
+	<!-- Main Heading Starts -->
+		<h2 class="main-heading text-center">
+			ORDERS
+		</h2>
+	<!-- Main Heading Ends -->
+	<!-- Shopping Cart Table Starts -->
+		<div class="table-responsive shopping-cart-table">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<td class="text-center">
+							Product Name
+						</td>
+						<td class="text-center">
+							Product Type
+						</td>	
+						<td class="text-center">
+							Quantity
+						</td>
+						<td class="text-center">
+							Date Ordered
+						</td>
+						<td class="text-center">
+							Status
+						</td>
+						
+					</tr>
+				</thead>
+				<tbody>
+				      <% Order.where(customerID: current_user).each do |order| %>
+    <% product = Product.find(order.productID) %>
+   
+      <tr>
+			<td class="text-center">
+					<%= link_to product.tittle, '/products/'+ product.id.to_s %>		
+			</td>
+			<td class="text-center">
+				<%= order.Ptype %>
+			  
+			 </td>
+			 
+			 	<td class="text-center">
+			 	  <%= order.quantity %>						
+				</td>
+				
+				<% f = Order.where(customerID: current_user,status: "pending").pluck(:id) %>
+				
+				 <td  class="text-center">
+				   <%=  order.dateOrdered %>
+				   </td>
+				   <td class ="text-center">
+				    <%= order.status %>
+				   </td>
+						
+      </tr>
+       <%end%>
+ 
+
+				</tbody>
+				<tfoot>
+					<tr>
+				</tfoot>
+			</table>	
+		
+		</div>
+		</div>
+	<!-- Shopping Cart Table Ends -->
+
+
+
+</body>
+</html>

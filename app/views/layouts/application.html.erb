@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+	<meta charset="utf-8">
+	<!--[if IE]>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<![endif]-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<title>Fashion Shoppe Stores - Bootstrap 3 Template</title>
+	
+	<!-- Bootstrap Core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Google Web Fonts -->
+	<link href="http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700" rel="stylesheet" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+	
+	<!-- CSS Files -->
+	<link href="css/style.css" rel="stylesheet">
+	<link href="css/responsive.css" rel="stylesheet">
+	
+	<!--[if lt IE 9]>
+		<script src="js/ie8-responsive-file-warning.js"></script>
+	<![endif]-->
+	
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	<!-- Fav and touch icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/fav-144.png.html">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/fav-114.png.html">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/fav-72.png.html">
+	<link rel="apple-touch-icon-precomposed" href="/assets/fav-57.png.html">
+	<link rel="shortcut icon" href="/assets/fav.png.html">
+	
+</head>
+<script>
+function reverse(s){
+    return s.split("").reverse().join("");
+}
+
+	function removeItem2(id,q,p,flag) {
+		
+		var myelem = parseInt(q.substr(1))
+		var pathname = window.location.pathname; 
+		
+		if (flag != 1 && (pathname == "/cart.html" ||pathname =="/cart")) {
+				removeItem(id,myelem, 1)
+		}
+        	$.ajax({
+                  type: "POST",
+                  url: "/removeItem",
+                  data: {oid : id},
+  				 success: function(data) {
+      			 alert(data.head);
+    				 }
+                  
+                });
+                var elem = document.getElementById('orderHcart'+id);
+    			elem.parentNode.removeChild(elem);
+    			var oldTotal = 	document.getElementById("subtotalHcart").innerHTML 
+    			
+    			document.getElementById("subtotalHcart").innerHTML = "RS " + (parseInt(oldTotal.substr(3)) - p*myelem)
+    			var oldCartTitle = document.getElementById("cart-total").innerHTML
+    			var oldItemTot = parseInt(oldCartTitle.split(' ')[0]);
+    			var rev = reverse(oldCartTitle);
+    			var oldQuanTot = parseInt(reverse(rev.split(' ')[0]));
+    			document.getElementById("cart-total").innerHTML = (oldItemTot-1)+" item(s) - Rs " +(oldQuanTot - p*myelem)
+    	}
+    	
+	        function checkoutConfirmation(uid) {
+        	total = document.getElementById("subtotalHcart").innerHTML
+        if (confirm("Confirm Checkout for Rs " + total)) {
+            alert("Your order has been processed!")
+                $.ajax({
+                  type: "POST",
+                  data: {custid : uid},
+                  url: "/checkout"
+                });
+        } else {
+            
+        }
+       
+       
+        }
+        
+        
+      // function to set the height on fly
+      document.getElementById("tbox")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+        document.getElementById("id_of_button").click();
+    }
+});
+
+ function autoHeight() {
+   $('#content').css('min-height', 0);
+   $('#content').css('min-height', (
+     $(document).height() 
+     - $('#header').height() 
+     - $('#footer').height()
+   ));
+ }
+
+ // onDocumentReady function bind
+ $(document).ready(function() {
+   autoHeight();
+ });
+function Search() {
+	var query = document.getElementById('tbox').value
+	 $.ajax({
+                  type: "POST",
+                  data: {query : query},
+                  url: "/search"
+                });
+	
+}
+ 
+function changeHeight() {
+  setTimeout(function () {
+    autoHeight();
+  //do something once
+}, 1);
+  
+  
+}
+</script>
+
+
+<body>
+  <div id = "header">
+
+	<header id="header-area">
+	<!-- Header Top Starts -->
+		<div class="header-top">
+			<div class="container">					
+				<!-- Currency & Languages Starts -->
+					<div class="col-sm-4 col-xs-12">
+						<div class="pull-left">
+		
+						</div>
+					</div>
+				<!-- Currency & Languages Ends -->
+				<!-- Header Links Starts -->
+					<div class="col-sm-8 col-xs-12">
+						<div class="header-links">
+							<ul class="nav navbar-nav pull-right">
+								<li>
+									<a href="/index.html">
+										<i class="fa fa-home" title="Home"></i>
+										<span class="hidden-sm hidden-xs">
+											Home
+										</span>
+									</a>
+								</li>
+								<li>
+									<a href="/index.html#">
+										<i class="fa fa-user" title="My Account"></i>
+										<span class="hidden-sm hidden-xs">
+											My Account
+										</span>
+									</a>
+								</li>
+								<li>
+									<a href="/cart.html">
+										<i class="fa fa-shopping-cart" title="Shopping Cart"></i>
+										<span class="hidden-sm hidden-xs">
+											Shopping Cart
+										</span>
+									</a>
+								</li>
+								<li>
+									<a onclick= "checkoutConfirmation() " type = "button">
+										<i class="fa fa-crosshairs" title="Checkout"></i>
+										<span class="hidden-sm hidden-xs">
+											Checkout
+										</span>
+									</a>
+								</li>
+																	  <% if current_user %>
+																	  <li>
+    <a style="font-weight:bold;"> <%= current_user.first_name %> </a> </li>
+    	<li>
+							<a href="/log_out.html">
+										<i class="fa fa-lock" title="Login"></i>
+										<span class="hidden-sm hidden-xs">
+											Logout
+										</span>
+									</a>
+								</li>
+  <% else %>
+								<li>
+
+									<a href="/sign_up.html">
+										<i class="fa fa-unlock" title="Register"></i>
+										<span class="hidden-sm hidden-xs">
+											Register
+										</span>
+									</a>
+								</li>
+								<li>
+									<a href="/log_in.html">
+										<i class="fa fa-lock" title="Login"></i>
+										<span class="hidden-sm hidden-xs">
+											Login
+										</span>
+									</a>
+								</li>
+								  <% end %>
+							</ul>
+						</div>
+					</div>
+				<!-- Header Links Ends -->
+			</div>
+		</div>
+	<!-- Header Top Ends -->
+	<!-- Starts -->
+		<div class="container">
+		<!-- Main Header Starts -->
+			<div class="main-header">
+				<div class="row">					
+				<!-- Search Starts -->
+				
+					<div class="col-md-3">
+						<div id="search">
+							<div class="input-group">
+							  <input type="text" id = "tbox" class="form-control input-lg" placeholder="Search" onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('tbutton').click()">
+							  <span class="input-group-btn">
+								<button id = "tbutton" onclick = "Search()" class="btn btn-lg" type="button">
+									<i class="fa fa-search"></i>
+								</button>
+							  </span>
+							</div>
+						</div>	
+					</div>
+				<!-- Search Ends -->
+				<!-- Logo Starts -->
+					<div class="col-md-6">
+						<div id="logo">
+							<a href="index.html"><img src="/assets/logo2.jpg" title="Fashion Shoppe" alt="Fashion Shoppe" class="img-responsive" /></a>
+						</div>
+					</div>
+				<!-- Logo Starts -->
+				<!-- Shopping Cart Starts -->
+				<% if current_user %>
+					<div class="col-md-3">
+						<div id="cart" class="btn-group btn-block">
+							<button type="button" data-toggle="dropdown" class="btn btn-block btn-lg dropdown-toggle">
+								<i class="fa fa-shopping-cart"></i>
+		
+								<span class="hidden-md">Cart:</span> 
+								<% tot = 0 %>
+								<% orderList =  Order.where(customerID: current_user,status: "pending") %>
+								<% orderList.each do |order| %>
+				      						
+   											 <% product = Product.find(order.productID) %>
+   											 <% temparr = eval(product.features) %>
+				 	<% prodPrce = temparr[temparr.find_index(order.Ptype) + 1].to_i %>
+   											  <% tot = tot + order.quantity * prodPrce %>
+   											 <% end %>
+								<% if tot < 1500 %>
+									<% tot = tot + 240 %>
+							  <% end %>
+								<span id="cart-total"><%= orderList.length %> item(s) - Rs <%= tot.to_i %></span>
+								<i class="fa fa-caret-down"></i>
+							</button>
+							<ul class="dropdown-menu pull-right">
+								<li>
+									<table class="table hcart">
+										
+										 <%  orderList.each do |order| %>
+				      						
+   											 <% product = Product.find(order.productID) %>
+   											 <% temparr = eval(product.features) %>
+				 	<% prodPrce = temparr[temparr.find_index(order.Ptype) + 1].to_i %>
+											<% var3 =  "orderHcart"+ order.id.to_s %>
+      										<tr id  = <%= var3 %> >
+													<td class="text-center">
+												<a href="product.html">
+													<img src="http://www.grocerypoint.in/image/data/grocery%20product/Fairness%20Cream/Fairever.jpg" alt="image" title="image" class="img-thumbnail img-responsive" />
+												</a>
+											</td>
+											
+											
+											<td class="text-left">
+												<%= link_to product.tittle, '/products/'+ product.id.to_s %>
+											</td>
+											<% var =  "quantityHCart"+ order.id.to_s %>
+											<td id = <%= var %> class="text-right">x <%= order.quantity %></td>
+											<td id = "theprice1<%=order.id%>" class="text-right">Rs <%= prodPrce %></td>
+											<td class="text-center">
+												
+												<a onclick = "removeItem2(<%= order.id %>,<%= var %>.innerHTML, <%= prodPrce %>)">
+													<i class="fa fa-times"></i>
+												</a>
+											</td>
+												
+											</tr>
+											
+											<% end %>
+									
+									</table>
+								</li>
+								<li>
+									<table class="table table-bordered total">
+										<tbody>
+											<tr>
+												<td class="text-right"><strong>Total</strong></td>
+												<td id = "subtotalHcart" class="text-left">Rs <%= tot %></td>
+											</tr>
+										</tbody>
+									</table>
+									<p class="text-right btn-block1">
+										
+										<% if !current_user.nil?   %>
+										<%= javascript_tag do %>
+  var data = <%= current_user.id %>
+<% end %>
+<% end %>
+										<a href="cart.html">
+											View Cart
+										</a>
+										<a onclick = "checkoutConfirmation(data)">
+											Checkout
+										</a>
+									</p>
+								</li>									
+							</ul>
+						</div>
+					</div>
+					<% end %>
+				<!-- Shopping Cart Ends -->
+				</div>
+			</div>
+		<!-- Main Header Ends -->
+		<!-- Main Menu Starts -->
+			<nav id="main-menu" class="navbar" role="navigation">
+			<!-- Nav Header Starts -->
+				<div class="navbar-header">
+					<button type="button" class="btn btn-navbar navbar-toggle" data-toggle="collapse" data-target=".navbar-cat-collapse">
+						<span class="sr-only">Toggle Navigation</span>
+						<i class="fa fa-bars"></i>
+					</button>
+				</div>
+			<!-- Nav Header Ends -->
+			<!-- Navbar Cat collapse Starts -->
+				<div class="collapse navbar-collapse navbar-cat-collapse">
+					<ul class="nav navbar-nav nav-tabs nav-justified ">
+			 <% Category.all.each do |category| %>
+			 <li class="dropdown ">
+				 	<a  href="category-list.html" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10">
+								<%= category.name %>
+					</a>
+						<div class="dropdown-menu">
+								<div class="dropdown-inner">
+									
+							<% category.subcategories.each do |subcategory| %>
+							<ul class="list-unstyled">
+								<% if subcategory != "" %>
+								<li class="dropdown-header"><%= subcategory %></li>
+								<%end%>
+								<% Product.where(subcategory: subcategory,category: category.name).each do |product| %>
+									<li><a tabindex="-1" href= "/products/ <%= product.id%> "><%= product.tittle %></a></li>
+								<% end %>
+									</ul>
+							<%end%>
+						
+							</div>
+							</div>
+			</li>
+			 <%end%>
+			
+					
+						
+					
+				
+					
+                    
+					</ul>
+				</div>
+			<!-- Navbar Cat collapse Ends -->
+			</nav>
+		<!-- Main Menu Ends -->
+		</div>
+	<!-- Ends -->
+	</header>
+</div>
+<div id = "content" >
+  <%= yield %>
+</div>
+
+<div id = "footer">
+<!-- Footer Section Starts -->
+	<footer id="footer-area">
+	<!-- Footer Links Starts -->
+		<div class="footer-links">
+		<!-- Container Starts -->
+			<div class="container">
+				<!-- Information Links Starts -->
+					<div class="col-md-2 col-sm-6">
+						<h5>Information</h5>
+						<ul>
+							<li><a href="about.html">About Us</a></li>
+						</ul>
+					</div>
+				<!-- Information Links Ends -->
+				<!-- My Account Links Starts -->
+					<% if current_user %>
+					<div class="col-md-2 col-sm-6">
+				
+						<h5>My Account</h5>
+						<ul>
+							<li><a href="/myorders">My Orders</a></li>
+							<li><a href="/users/<%=current_user.id%>">My Personal Info</a></li>
+						</ul>
+					</div>
+					<% end %>
+				<!-- My Account Links Ends -->					
+				<!-- Customer Service Links Starts -->
+					<div class="col-md-2 col-sm-6">
+						<h5>Service</h5>
+						<ul>
+							<li><a href="contact.html">Contact Us</a></li>
+						</ul>
+					</div>
+				<!-- Customer Service Links Ends -->
+				<!-- Follow Us Links Starts -->
+					<div class="col-md-2 col-sm-6">
+						<h5>Follow Us</h5>
+						<ul>
+							<li><a href="index.html#">Facebook</a></li>
+						</ul>
+					</div>
+				<!-- Follow Us Links Ends -->
+				<!-- Contact Us Starts -->
+					<div class="col-md-4 col-sm-12 last">
+						<h5>Contact Us</h5>
+						<ul>
+							<li>My Company</li>
+							<li>
+								1247 LB Nagar Road, Hyderabad, Telangana - 35
+							</li>
+							<li>
+								Email: <a href="index.html#">info@demolink.com</a>
+							</li>								
+						</ul>
+						<h4 class="lead">
+							Tel: <span>1(234) 567-9842</span>
+						</h4>
+					</div>
+				<!-- Contact Us Ends -->
+			</div>
+		<!-- Container Ends -->
+		</div>
+	<!-- Footer Links Ends -->
+	<!-- Copyright Area Starts -->
+		<div class="copyright pull-left", style = "width:100%">
+		<!-- Container Starts -->
+			<div class="container">
+			<!-- Starts -->
+				<p class="pull-left">
+					&nbsp; 2016 Smart Girl Cosmetics.
+				</p>
+			<!-- Ends -->
+			<!-- Payment Gateway Links Starts -->
+			<!-- Payment Gateway Links Ends -->
+			</div>
+		<!-- Container Ends -->
+		</div>
+	<!-- Copyright Area Ends -->
+	</footer>
+</div>
+</body>
+</html>

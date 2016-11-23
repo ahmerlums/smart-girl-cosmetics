@@ -1,0 +1,88 @@
+<html>
+  
+
+<body>
+
+
+
+
+	<div id="main-container" class="container">
+		<h2 class="main-heading text-center">
+			CUSTOMERS
+		</h2>
+		<div class="table-responsive shopping-cart-table">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<td class="text-center">
+							 First Name
+						</td>
+						<td class="text-center">
+							 Last Name
+						</td>
+						<td class="text-center">
+							 Email
+						</td>	
+						<td class="text-center">
+							 Mobile
+						</td>
+						<td class="text-center">
+							 Address
+						</td>
+						
+						<td class="text-center">
+							City
+						</td>
+						<td class ="text-center">
+							Member Since
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+				      <% User.all.each do |user| %>
+   
+      <tr>
+        <td class="text-center">
+							<%= user.first_name %>
+			</td>
+			<td class="text-center">
+					<%= user.last_name %>		
+			</td>
+			<td class="text-center">
+				<%= user.email %>
+			  
+			 </td>
+			 
+			 	<td class="text-center">
+			 	  <%= user.phone %>						
+				</td>
+				
+				 <td  class="text-center">
+				   <%=  user.address %>
+				   </td>
+				   <td class ="text-center">
+				    <%= user.city %>
+				   </td>
+				   <td class ="text-center">
+				    <%= user.created_at %>
+				   </td>
+				   
+					
+						
+      </tr>
+       <%end%>
+ 
+
+				</tbody>
+				<tfoot>
+					<tr>
+				</tfoot>
+			</table>	
+		
+		</div>
+		</div>
+
+
+
+</body>
+</html>

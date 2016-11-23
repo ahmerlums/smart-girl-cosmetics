@@ -1,0 +1,44 @@
+<%= form_for(@order) do |f| %>
+<% str =  request.original_url.reverse %>
+<% str = str[0,str.index(".")].reverse %>
+  <% if @order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+      <% @order.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :productID %>
+    <%= f.number_field :productID, :value => str %>
+  </div>
+
+  <div class="field">
+    <%= f.label :customerID %>
+    <%= f.number_field :customerID, :value => session[:user_id] %>
+  </div>
+
+  <div class="field">
+    <%= f.label :status %>
+    <%= f.text_field :status, :value => "pending" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :dateOrdered %>
+    <%= f.date_select :dateOrdered %>
+  </div>
+
+  <div class="field">
+    <%= f.label :quantity %>
+    <%= f.number_field :quantity %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

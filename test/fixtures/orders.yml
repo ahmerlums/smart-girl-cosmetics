@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  productID: 1
+  customerID: 1
+  status: MyString
+  dateOrdered: 2016-11-10
+  quantity: 1
+
+two:
+  productID: 1
+  customerID: 1
+  status: MyString
+  dateOrdered: 2016-11-10
+  quantity: 1

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<!--[if IE]>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<![endif]-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<title>Fashion Stores - Bootstrap 3 Template</title>
+	
+	<!-- Bootstrap Core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Google Web Fonts -->
+	<link href="http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700" rel="stylesheet" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+	
+	<!-- CSS Files -->
+	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	<link href="css/responsive.css" rel="stylesheet">
+	
+	<!--[if lt IE 9]>
+		<script src="js/ie8-responsive-file-warning.js"></script>
+	<![endif]-->
+	
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	<!-- Fav and touch icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/fav-144.png.html">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/fav-114.png.html">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/fav-72.png.html">
+	<link rel="apple-touch-icon-precomposed" href="images/fav-57.png.html">
+	<link rel="shortcut icon" href="images/fav.png.html">
+	
+</head>
+<body>
+
+<!-- Main Container Starts -->
+	<div id="main-container" class="container">
+	<!-- Main Heading Starts -->
+		<h2 class="main-heading text-center">
+			Login or create new account
+		</h2>
+	<!-- Main Heading Ends -->
+	<!-- Login Form Section Starts -->
+		<section class="login-area">
+			<div class="row">
+				<div class="col-sm-6">
+				<!-- Login Panel Starts -->
+					<div class="panel panel-smart">
+						<div class="panel-heading">
+							<h3 class="panel-title">Login</h3>
+						</div>
+						<div class="panel-body">
+							<p>
+								Please login using your existing account
+							</p>
+						<!-- Login Form Starts -->
+						<%= form_tag sessions_path do %>
+	<div class="col-sm-5", style= "padding: 0 0 0 0">			
+    <label class="sr-only" >Email</label>
+     <%= text_field_tag :email, params[:email],:class=> "form-control",:placeholder=> "Email" %>
+  
+  
+  	</div>
+  	<div class="col-sm-5", style= "padding: 0px 4px 0 2px">	
+   <label class="sr-only">Password</label>
+    <%= password_field_tag :password,nil, class: "form-control",placeholder:"Pasword" %>
+  </div>
+  
+  <p class="button"><%= submit_tag "Login", :class => 'btn btn-brown' %></p>
+  
+<% end %>
+
+
+							
+							
+						<!-- Login Form Ends -->
+						</div>
+					</div>
+				<!-- Login Panel Ends -->
+				</div>
+				<div class="col-sm-6">
+				<!-- Account Panel Starts -->
+					<div class="panel panel-smart">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								Create new account
+							</h3>
+						</div>
+						<div class="panel-body">
+							<p>
+								Registration allows you to avoid filling in billing and shipping forms every time you checkout on this website
+							</p>
+							<a href="sign_up.html" class="btn btn-brown">
+								Register
+							</a>
+						</div>
+					</div>
+				<!-- Account Panel Ends -->
+			
+				</div>
+			</div>
+		</section>
+	<!-- Login Form Section Ends -->
+	</div>
+<!-- Main Container Ends -->
+
+<!-- JavaScript Files -->
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/jquery-migrate-1.2.1.min.js"></script>	
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-hover-dropdown.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>
+
